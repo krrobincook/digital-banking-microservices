@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/api/v1/accounts")
 @Slf4j
@@ -40,5 +42,28 @@ public class AccountController {
             (@PathVariable String accountNumber){
         accountService.blockAccount(accountNumber);
         return ResponseEntity.ok("Account blocked successfully");
+    }
+
+    /**
+     * SAGA step 1 - Deduct balance
+     * called by transaction service when transfer is initiated
+     */
+    @PutMapping("/{accountNumber}/deduct")
+    public ResponseEntity<String> deductBalance(@PathVariable String accountNumber, @RequestParam BigDecimal amount){
+        accountService.deductBalance(accountNumber, amount);
+        return ResponseEntity.ok("Balance deducted Successfully");
+    }
+
+
+    /** compensating transaction endpoint
+     * called by transaction service in two scenarios
+     * 1. Fraud detect - refund sender (undo step 1)
+     * 2. Transaction complete - credit receiver
+     */
+
+    @PutMapping("/{accountNumber}/credit")
+    public ResponseEntity<String> creditBalance(@PathVariable String accountNumber, @RequestParam BigDecimal amount){
+        accountService.creditBalance(accountNumber, amount);
+        return ResponseEntity.ok("BALANCE CREDITED SUCCESSFULLY");
     }
 }

@@ -44,7 +44,7 @@ public class Account {
     private BigDecimal balance;
 
     @Column(nullable = false, precision = 15, scale = 2)
-    private BigDecimal dailyTransaction;
+    private BigDecimal dailyTransactionLimit;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

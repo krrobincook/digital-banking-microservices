@@ -1,9 +1,15 @@
 package com.banking.accountservice.DTO;
 import com.banking.accountservice.entity.AccountStatus;
 import com.banking.accountservice.entity.AccountType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccountResponse {
 
     private String id;
@@ -22,7 +28,7 @@ public class AccountResponse {
 
     private BigDecimal balance;
 
-    private BigDecimal dailyTransaction;
+    private BigDecimal dailyTransactionLimit;
 
     private LocalDateTime createdAt;
 }
