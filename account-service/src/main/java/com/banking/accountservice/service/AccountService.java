@@ -96,6 +96,7 @@ public class AccountService {
         }
 
         account.setBalance(account.getBalance().add(amount));
+
         accountRepository.save(account);
         log.info("Balance Credited successfully. New balance {}", account.getBalance());
     }
