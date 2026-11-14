@@ -1,8 +1,56 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
+
   application:
     name: fraud-detection-service
 
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    timeout: 2000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    consumer:
+      group-id: fraud-detection-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+            use:
+              type:
+                headers: false
+            value:
+              default:
+                type: java.util.HashMap
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+server:
+  port: ${SERVER_PORT}
+
+account:
+  service:
+    url: ${ACCOUNT_SERVICE_URL}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
 fraud:
-  max-transactions-per-minute: 5
-  suspicious-amount-multiplier: 5
-  max-balance-percentage: 0.90
+  max-transactions-per-minute: ${FRAUD_MAX_TRANSACTIONS_PER_MINUTE}
+  suspicious-amount-multiplier: ${FRAUD_SUSPICIOUS_AMOUNT_MULTIPLIER}
+  max-balance-percentage: ${FRAUD_MAX_BALANCE_PERCENTAGE}
