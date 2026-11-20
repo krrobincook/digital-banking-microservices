@@ -27,3 +27,8 @@ spring:
 
 server:
   port: ${SERVER_PORT}
+
+razorpay:
+  key-id: ${RAZORPAY_KEY_ID}
+  key-secret: ${RAZORPAY_KEY_SECRET}
+  webhook-secret: ${WEBHOOK_KEY_SECRET}
